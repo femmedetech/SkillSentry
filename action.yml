@@ -1,4 +1,4 @@
-name: "SkillSentry — scan des skills"
+name: "SkillSentry - scan des skills"
 description: "Audite les skills Claude Code d'un dépôt et échoue si l'une est dangereuse."
 branding:
   icon: shield
