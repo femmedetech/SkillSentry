@@ -25,39 +25,55 @@ Exposé comme skill `/check-skill` : verdict clair (🟢 SÛRE · 🟠 SUSPECTE 
 
 ## Installation
 
-Trois façons, selon l'usage.
+> **En bref** — Utilisateur·rice de Claude Code ? → **méthode 1 (plugin)**.
+> Juste besoin de scanner en terminal ou en CI ? → **méthode 2 (npx)**.
 
-### 1. Plugin Claude Code (recommandé pour les utilisateurs de skills)
+**Prérequis :** [Node.js](https://nodejs.org) ≥ 18 (vérifie avec `node --version`).
+
+### 1. Plugin Claude Code — le plus simple (recommandé)
+
+Dans Claude Code, tape ces deux commandes :
 
 ```
 /plugin marketplace add femmedetech/SkillSentry
 /plugin install skillsentry
 ```
 
-Fournit `/check-skill` **et** un contrôle automatique au démarrage (hook
-`SessionStart` qui alerte si une skill du projet apparaît, change ou est
-dangereuse).
+Puis **redémarre Claude Code**. Tu obtiens :
+- la commande **`/check-skill`** pour auditer une skill ou un projet ;
+- un **contrôle automatique au démarrage** (alerte si une skill apparaît, change, ou est dangereuse).
 
-### 2. Skill seule (script d'installation)
+### 2. En terminal avec `npx` — rien à installer
 
-```powershell
-.\install.ps1      # Windows
-```
 ```bash
-./install.sh       # macOS / Linux
+npx @femmedetech/skillsentry <chemin-de-la-skill-ou-du-projet>
 ```
 
-Copie la skill dans `~/.claude/skills/check-skill/`. **Rechargez la session
+`npx` télécharge et exécute SkillSentry à la volée. Parfait pour un scan ponctuel
+ou en **CI**. Exemple :
+
+```bash
+npx @femmedetech/skillsentry ~/Téléchargements/une-skill-a-verifier
+```
+
+### 3. Skill seule via script — sans passer par le plugin
+
+```bash
+git clone https://github.com/femmedetech/SkillSentry.git
+cd SkillSentry
+./install.sh          # macOS / Linux
+```
+Sous **Windows** (PowerShell) :
+```powershell
+git clone https://github.com/femmedetech/SkillSentry.git
+cd SkillSentry
+.\install.ps1
+```
+
+Le script copie la skill dans `~/.claude/skills/check-skill/` ; **redémarre
 Claude Code** ensuite pour voir `/check-skill`.
 
-### 3. En ligne de commande (npx, hors Claude Code / CI)
-
-```bash
-npx @femmedetech/skillsentry <chemin>
-```
-
-Nécessite **Node.js ≥ 18** dans le PATH. (La commande installée reste
-`skillsentry`.)
+*(Pour la CI/GitHub Actions, voir la section « Intégration continue » plus bas.)*
 
 ## Usage
 
