@@ -25,12 +25,11 @@ runs:
     - name: Scan
       shell: bash
       env:
+        # Le seuil est transmis au scanner par variable d'environnement :
+        # aucun fichier n'est écrit dans le dépôt de l'utilisateur.
         SKILLSENTRY_FAIL_ON: ${{ inputs.fail-on }}
       run: |
         AUDIT="${{ github.action_path }}/skills/check-skill/scripts/audit.mjs"
-        # Config éphémère pour appliquer fail-on.
-        echo "{ \"failOn\": \"$SKILLSENTRY_FAIL_ON\" }" > "${{ inputs.path }}/skillguard.config.json" 2>/dev/null || \
-        echo "{ \"failOn\": \"$SKILLSENTRY_FAIL_ON\" }" > skillguard.config.json
         if [ "${{ inputs.sarif }}" = "true" ]; then
           node "$AUDIT" "${{ inputs.path }}" --sarif > results.sarif || true
         fi

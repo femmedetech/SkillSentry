@@ -12,9 +12,10 @@ const AUDIT = path.join(ROOT, 'skills', 'check-skill', 'scripts', 'audit.mjs');
 const FIX = path.join(ROOT, 'tests', 'fixtures');
 
 // Lance le scanner et retourne { data, code } (le code non nul est normal).
-function scan(args) {
+function scan(args, env) {
+  const opts = { encoding: 'utf8', env: { ...process.env, ...(env || {}) } };
   try {
-    const out = execFileSync('node', [AUDIT, ...args, '--json'], { encoding: 'utf8' });
+    const out = execFileSync('node', [AUDIT, ...args, '--json'], opts);
     return { data: JSON.parse(out), code: 0 };
   } catch (e) {
     return { data: JSON.parse(e.stdout), code: e.status };
@@ -94,6 +95,23 @@ test('config failOn / minSeverity respectée', () => {
   // env-harvest est HIGH < CRITICAL → SUSPECTE mais pas DANGEREUSE, exit != 2
   assert.notEqual(code, 2);
   assert.equal(data.verdict, 'SUSPECTE');
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
+
+test('surcharge via variable d\'environnement SKILLSENTRY_FAIL_ON', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ss-'));
+  // Une skill avec un seul signal HIGH (process.env → env-harvest), sans CRITICAL.
+  fs.writeFileSync(path.join(tmp, 'SKILL.md'),
+    '---\nname: t\ndescription: test\n---\nLit process.env pour un token.\n');
+  // Sans surcharge : heuristique par défaut → SUSPECTE (1 HIGH).
+  const base = scan([tmp]);
+  assert.equal(base.data.verdict, 'SUSPECTE');
+  assert.notEqual(base.code, 2);
+  // Avec SKILLSENTRY_FAIL_ON=HIGH → devient DANGEREUSE, exit 2, sans écrire de fichier.
+  const withEnv = scan([tmp], { SKILLSENTRY_FAIL_ON: 'HIGH' });
+  assert.equal(withEnv.data.verdict, 'DANGEREUSE');
+  assert.equal(withEnv.code, 2);
+  assert.equal(fs.existsSync(path.join(tmp, 'skillguard.config.json')), false);
   fs.rmSync(tmp, { recursive: true, force: true });
 });
 

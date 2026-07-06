@@ -106,6 +106,9 @@ Placez un `skillguard.config.json` à la racine de la cible (voir
 Suppression ponctuelle en ligne : ajoutez `skillguard-ignore` (ou
 `skillguard-ignore-next-line`) en commentaire près de la ligne concernée.
 
+En CI (sans écrire de fichier), on peut surcharger via variables
+d'environnement : `SKILLSENTRY_FAIL_ON` et `SKILLSENTRY_MIN_SEVERITY`.
+
 ## Intégration continue (GitHub Actions)
 
 ```yaml
