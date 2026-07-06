@@ -1,5 +1,10 @@
 # SkillSentry - scanner de sécurité pour skills Claude Code
 
+[![npm](https://img.shields.io/npm/v/@femmedetech/skillsentry)](https://www.npmjs.com/package/@femmedetech/skillsentry)
+[![Tests](https://github.com/femmedetech/SkillSentry/actions/workflows/test.yml/badge.svg)](https://github.com/femmedetech/SkillSentry/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Node.js](https://img.shields.io/badge/node-%E2%89%A518-brightgreen)
+
 Outil défensif, **local et sans dépendance**, pour **vérifier une skill Claude
 Code AVANT de l'installer**. Il détecte les attaques que des acteurs
 malveillants glissent dans les skills partagées en ligne : prompt injection,
