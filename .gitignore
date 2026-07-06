@@ -1,0 +1,7 @@
+node_modules/
+results.sarif
+**/.skillguard-baseline.json
+skillguard.config.json
+.DS_Store
+Thumbs.db
+*.log

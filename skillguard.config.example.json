@@ -1,0 +1,7 @@
+{
+  "_comment": "Copiez ce fichier en skillguard.config.json à la racine de la cible pour ajuster le scan. Toutes les clés sont optionnelles.",
+  "ignore": ["**/vendor/**", "**/*.min.js"],
+  "allowPatterns": ["EXAMPLE", "attacker\\.example"],
+  "minSeverity": "LOW",
+  "failOn": "HIGH"
+}

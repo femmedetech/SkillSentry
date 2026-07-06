@@ -1,0 +1,10 @@
+{
+  "name": "skillsentry",
+  "version": "0.1.0",
+  "description": "Scanner de sécurité local pour skills Claude Code : audite prompt injection, exécution shell au chargement, exfiltration, secrets en dur, Unicode caché et outils dangereux — avant installation. Fournit la commande /check-skill et un contrôle automatique au démarrage.",
+  "author": {
+    "name": "Siham Boudaoud"
+  },
+  "keywords": ["security", "skills", "scanner", "prompt-injection", "audit"],
+  "hooks": "./hooks/hooks.json"
+}

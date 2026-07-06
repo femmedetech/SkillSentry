@@ -1,0 +1,13 @@
+{
+  "name": "skillsentry-marketplace",
+  "owner": {
+    "name": "Siham Boudaoud"
+  },
+  "plugins": [
+    {
+      "name": "skillsentry",
+      "source": "./",
+      "description": "Scanner de sécurité local pour skills Claude Code (commande /check-skill + contrôle automatique au démarrage)."
+    }
+  ]
+}

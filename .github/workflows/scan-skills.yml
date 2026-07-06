@@ -1,0 +1,22 @@
+name: scan-skills
+on:
+  pull_request:
+    paths:
+      - ".claude/skills/**"
+  push:
+    paths:
+      - ".claude/skills/**"
+permissions:
+  contents: read
+  security-events: write
+jobs:
+  skillsentry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Utilisation locale de l'action (dépôt SkillSentry lui-même).
+      # Dans un autre dépôt : `uses: femmedetech/SkillSentry@v0`
+      - uses: ./
+        with:
+          path: ".claude/skills"
+          fail-on: "HIGH"

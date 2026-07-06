@@ -1,0 +1,42 @@
+name: "SkillSentry — scan des skills"
+description: "Audite les skills Claude Code d'un dépôt et échoue si l'une est dangereuse."
+branding:
+  icon: shield
+  color: red
+inputs:
+  path:
+    description: "Chemin à scanner (dossier de skills ou projet)."
+    required: false
+    default: ".claude/skills"
+  fail-on:
+    description: "Sévérité à partir de laquelle échouer (CRITICAL, HIGH, MEDIUM)."
+    required: false
+    default: "HIGH"
+  sarif:
+    description: "Générer results.sarif (true/false)."
+    required: false
+    default: "true"
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+    - name: Scan
+      shell: bash
+      env:
+        SKILLSENTRY_FAIL_ON: ${{ inputs.fail-on }}
+      run: |
+        AUDIT="${{ github.action_path }}/skills/check-skill/scripts/audit.mjs"
+        # Config éphémère pour appliquer fail-on.
+        echo "{ \"failOn\": \"$SKILLSENTRY_FAIL_ON\" }" > "${{ inputs.path }}/skillguard.config.json" 2>/dev/null || \
+        echo "{ \"failOn\": \"$SKILLSENTRY_FAIL_ON\" }" > skillguard.config.json
+        if [ "${{ inputs.sarif }}" = "true" ]; then
+          node "$AUDIT" "${{ inputs.path }}" --sarif > results.sarif || true
+        fi
+        node "$AUDIT" "${{ inputs.path }}"
+    - name: Upload SARIF
+      if: ${{ inputs.sarif == 'true' && always() }}
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: results.sarif
